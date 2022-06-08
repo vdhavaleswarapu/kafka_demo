@@ -1,3 +1,0 @@
-rootProject.name = 'kafka_demo'
-include 'basic_comms'
-
