@@ -21,7 +21,7 @@
   <option value="EUR">EUR</option>
 </select><br>
 <label for="key">PIN:</label><br>
-<input type="text" name="key"><br>
+<input type="password" name="key"><br>
 <input type="submit"><br>
 </form>
 </body>
