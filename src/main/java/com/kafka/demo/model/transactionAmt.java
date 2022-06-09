@@ -13,11 +13,19 @@ public class transactionAmt {
 @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private Integer amount;
+	private String senderID;
+	private String receiverID;
+	private String key;
+	private String currency;
 
 	protected transactionAmt() {}
 
-	public transactionAmt(final int amount){
+	public transactionAmt(final int amount, final String senderID, final String receiverID, final String key, final String currency){
 		this.amount = amount;
+		this.senderID = senderID;
+		this.receiverID = receiverID;
+		this.key = key;
+		this.currency = currency;
 	}
 
 	public int getId() {
@@ -27,7 +35,6 @@ public class transactionAmt {
 	public int getAmount() {
 		return amount;
 	}
-
 
 	@Override
 	public String toString() {

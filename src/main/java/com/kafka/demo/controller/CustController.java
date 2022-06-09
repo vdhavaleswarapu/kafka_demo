@@ -19,9 +19,9 @@ public class CustController
 		return "home.jsp";
 	}
 	@RequestMapping("/addTransaction")
-	public String addAmt(transactionAmt amt)
+	public String addAmt(final int amt, final String senderID, final String receiverID,final String key, final String currency)
 	{
-		repo.save(amt);
+		repo.save(new transactionAmt(amt, senderID,receiverID,key, currency));
 		return "home.jsp";
 	}
 }
