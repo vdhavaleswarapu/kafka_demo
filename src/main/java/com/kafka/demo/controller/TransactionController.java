@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kafka.demo.dao.TransactionRepo;
-import com.kafka.demo.model.TransactionAmt;
+import com.kafka.demo.model.TransactionRecord;
 
 @Controller
 public class TransactionController
@@ -48,7 +48,7 @@ public class TransactionController
 			}
 			temp.get(0).setCreditAvailable(temp.get(0).getCreditAvailable()-amt);
 			receiver.get(0).setCreditAvailable(receiver.get(0).getCreditAvailable()+amt);
-			repo.save(new TransactionAmt(amt, senderID,receiverID,key, currency));
+			repo.save(new TransactionRecord(amt, senderID,receiverID,key, currency));
 		}
 		else System.out.println("Invalid PIN. Retry.");
 
