@@ -1,5 +1,7 @@
 package com.kafka.demo.controller;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend.Prop;
+import com.kafka.demo.BootjpaApplication;
 import com.kafka.demo.dao.CustomerRepo;
 import com.kafka.demo.model.BaseData;
 import java.util.ArrayList;
@@ -20,28 +22,40 @@ import com.kafka.demo.model.TransactionRecord;
 @Controller
 public class TransactionController
 {
-	@Autowired
-	TransactionRepo repo;
 
 	@Autowired
+	TransactionRepo repo;
+	@Autowired
 	CustomerRepo auth;
+
+
+	private String kafkaMessage;
+	public String getKafkaMessage(){return this.kafkaMessage;}
 
 	@RequestMapping("/")
 	public String home()
 	{
+		Properties properties = new Properties();
+		properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"127.0.0.1:9092");
+		properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());
+
+		//Creating a producer
+		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
+
 		return "home.jsp";
 	}
 	@RequestMapping("/transaction")
-	public String addAmt(final int amt, final String senderID, final String receiverID,final String key, final String currency)
+	public String addTransaction(final int amt, final String senderID, final String receiverID,final String key, final String currency)
 	{
 
 		List<BaseData> temp= new ArrayList<>(); //Using a temp variable to validate auth checks for sender
 		List<BaseData> receiver= new ArrayList<>(); //Using a temp variable for receiver data
-		auth.findBycIDAndPin(senderID.toUpperCase(Locale.ROOT), key).forEach(i->temp.add(i));
+		auth.findBycIDAndPin(senderID.toUpperCase(Locale.ROOT), key).forEach(i->temp.add(i)); //verifying that the senderID corresponds to the sender's PIN
 		auth.findBycID(receiverID.toUpperCase(Locale.ROOT)).forEach(i->receiver.add(i));
 
 
-		if(!temp.isEmpty()){ //Only adding valid transactions to the transaction repo using a simple auth check on the customer PIN
+		if(!temp.isEmpty() && amt>0){ //Only adding valid transactions to the transaction repo using a simple auth check on the customer PIN
 			if(temp.get(0).getCreditAvailable()<amt) {
 				System.out.println("Credit limit exceeded");
 				return "home.jsp";
@@ -61,11 +75,14 @@ public class TransactionController
 
 		//Creating a producer
 		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-
+//
 		//Create a producer record
 		ProducerRecord<String, String>
 				producerRecord = new ProducerRecord<>("demo_kafka",amt+" "+ currency+" transferred from "+senderID.toUpperCase(
 				Locale.ROOT) +" to "+receiverID.toUpperCase(Locale.ROOT));
+
+//		kafkaMessage = amt+" "+ currency+" transferred from "+senderID.toUpperCase(
+//				Locale.ROOT) +" to "+receiverID.toUpperCase(Locale.ROOT);
 
 		//Sending data async
 		producer.send(producerRecord);
