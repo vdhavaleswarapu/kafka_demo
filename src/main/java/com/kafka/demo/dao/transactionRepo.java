@@ -2,9 +2,9 @@ package com.kafka.demo.dao;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.kafka.demo.model.transactionAmt;
+import com.kafka.demo.model.TransactionAmt;
 
-public interface transactionRepo extends CrudRepository<transactionAmt,Integer>
+public interface TransactionRepo extends CrudRepository<TransactionAmt,Integer>
 {
 
 }

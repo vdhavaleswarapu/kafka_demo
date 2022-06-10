@@ -4,12 +4,20 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class baseData {
+public class BaseData {
 @Id
 	private String cID;
 	private String pin;
 	private int creditAvailable;
 	private String currency;
+
+	public int getCreditAvailable(){
+		return creditAvailable;
+	}
+
+	public void setCreditAvailable(int creditAvailable){
+		this.creditAvailable = creditAvailable;
+	}
 
 //	public String getId() {
 //		return cID;
@@ -25,7 +33,7 @@ public class baseData {
 //	}
 	@Override
 	public String toString() {
-		return "Message [id=" + cID + ", message=" + creditAvailable + "]";
+		return "Message [id=" + cID + ", Credit Available=" + creditAvailable + "]";
 	}
 
 }

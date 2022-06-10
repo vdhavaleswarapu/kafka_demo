@@ -8,7 +8,7 @@ import javax.persistence.Id;
 
 
 @Entity
-public class transactionAmt {
+public class TransactionAmt {
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -18,9 +18,9 @@ public class transactionAmt {
 	private String key;
 	private String currency;
 
-	protected transactionAmt() {}
+	protected TransactionAmt() {}
 
-	public transactionAmt(final int amount, final String senderID, final String receiverID, final String key, final String currency){
+	public TransactionAmt(final int amount, final String senderID, final String receiverID, final String key, final String currency){
 		this.amount = amount;
 		this.senderID = senderID;
 		this.receiverID = receiverID;

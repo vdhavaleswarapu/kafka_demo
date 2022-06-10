@@ -1,15 +1,15 @@
 package com.kafka.demo.service;
 
-import com.kafka.demo.model.transactionAmt;
+import com.kafka.demo.model.TransactionAmt;
 import java.util.List;
 import org.springframework.lang.NonNull;
 
-public class transactionService {
+public class TransactionService {
 
   @NonNull
-  private transactionService transactionService;
+  private TransactionService transactionService;
 
-  public List<transactionAmt> checkAmount(final int amt){
+  public List<TransactionAmt> checkAmount(final int amt){
 
 
     return transactionService.checkAmount(amt);

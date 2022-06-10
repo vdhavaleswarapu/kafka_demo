@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Transaction Here!</title>
+<title>Perform Transaction Here!</title>
 </head>
 <body>
-<form action="addTransaction">
+<form action="transaction">
 <label for="senderID">Sender ID:</label><br>
 <input type="text" name="senderID"><br>
 <label for="receiverID">Receiver ID:</label><br>
