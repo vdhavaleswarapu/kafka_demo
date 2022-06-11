@@ -22,27 +22,16 @@ import com.kafka.demo.model.TransactionRecord;
 @Controller
 public class TransactionController
 {
-
+	//Creating a Kafka producer that will be reused for all messages
+	KafkaProducer<String, String> producer = BootjpaApplication.createProducer();
 	@Autowired
 	TransactionRepo repo;
 	@Autowired
 	CustomerRepo auth;
 
-
-	private String kafkaMessage;
-	public String getKafkaMessage(){return this.kafkaMessage;}
-
 	@RequestMapping("/")
 	public String home()
 	{
-		Properties properties = new Properties();
-		properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"127.0.0.1:9092");
-		properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-		properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());
-
-		//Creating a producer
-		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-
 		return "home.jsp";
 	}
 	@RequestMapping("/transaction")
@@ -66,31 +55,17 @@ public class TransactionController
 		}
 		else System.out.println("Invalid PIN. Retry.");
 
-		//		Producer properties
-
-		Properties properties = new Properties();
-		properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"127.0.0.1:9092");
-		properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-		properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());
-
-		//Creating a producer
-		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-//
 		//Create a producer record
 		ProducerRecord<String, String>
 				producerRecord = new ProducerRecord<>("demo_kafka",amt+" "+ currency+" transferred from "+senderID.toUpperCase(
 				Locale.ROOT) +" to "+receiverID.toUpperCase(Locale.ROOT));
 
-//		kafkaMessage = amt+" "+ currency+" transferred from "+senderID.toUpperCase(
-//				Locale.ROOT) +" to "+receiverID.toUpperCase(Locale.ROOT);
-
-		//Sending data async
+		//Sending data asynchronously to the consumer
 		producer.send(producerRecord);
 
-		//flush and close
-		producer.flush();
-		producer.close();
-
+//		//flush and close
+//		producer.flush();
+//		producer.close();
 		return "home.jsp";
 	}
 }
